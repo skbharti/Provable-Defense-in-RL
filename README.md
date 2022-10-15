@@ -1,0 +1,34 @@
+Provable Defense against Backdoor Policies in RL
+===
+This repository contains official implementation of [Provable Defense against Backdoor Policies in RL]() paper. The code for two individual Atari game examples are present in ```boxing_ram``` and ```breakout``` directories. The codebase to train the backdoor model has been forked from [TrojDRL](https://github.com/pkiourti/rl_backdoor.git) and [TrojAI-RL](https://github.com/trojai/trojai_rl.git) repositories.
+
+
+Installing :
+===
+To run each of the example, we require to set up an independent conda environment. Further details on setting up the environment and running the individual examples can be found in the README.md file present in the respective directory.
+
+
+Running :
+===
+To test the sanitized policy in the backdoor environment, we have to follow three main steps :
+- Generate the clean samples by testing the backdoor policy $\pi^\dagger$ in the clean environment.
+- Constructing a sanitized policy $\pi^\dagger_{E_n}$ using the clean samples.
+- Testing the performance of sanitized policy $\pi^\dagger_{E_n}$ in the triggered environment.
+
+For more details refer to the README.md files in the ```breakout``` and ```boxing_ram``` subdirectories. 
+
+
+
+Citing this work :
+===
+```
+@inproceedings{
+bharti2022provable,
+title={Provable Defense against Backdoor Policies in Reinforcement Learning},
+author={Shubham Kumar Bharti and Xuezhou Zhang and Adish Singla and Jerry Zhu},
+booktitle={Thirty-Sixth Conference on Neural Information Processing Systems},
+year={2022},
+url={https://openreview.net/forum?id=11WmFbrIt26}
+}
+```
+
