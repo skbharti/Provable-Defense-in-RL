@@ -1,0 +1,14 @@
+# Requirements for building the sphinx documentation.
+# Commented-out requirements are mocked during the doc build.
+
+numpy==1.17.4
+tqdm>=4.32.1
+#torch>=1.4.0
+#torch-ac==1.1.0
+#gym==0.15.3
+#atari_py~=0.2.0
+
+# For building documentation:
+sphinx==2.4.4
+sphinx_rtd_theme
+sphinx-autodoc-typehints

@@ -1,0 +1,38 @@
+---
+#############################################################################################################
+### required basic parameters
+#############################################################################################################
+#
+# project_dir_path : path of the project directory from which trojai_rl code will be imported
+# big_data_dir_path : path of the big_data storage
+#
+#############################################################################################################
+project_dir_path : '../../'
+
+set_seed : True
+seed : 20
+
+samples_from_each_clean_episode : 20
+verbose : 1
+
+
+record : true
+record_notes : 'test sanitized policy in triggered env for different d for fixed n=40'
+output_dir : 'outputs' 
+
+#############################################################################################################
+#
+# environment parameters
+#
+#############################################################################################################
+device : 'cpu'
+poison : 'poison_100th_byte'   # type of poisoning
+trigger_magnitude : 255        # magtinute of the trigger
+poison_behavior : 'no_change'  # poison reward behavior, during testing reward should not change
+
+total_sanitization_samples : 24
+fixed_d : False
+times_to_repeat : 4
+test_episode_count : 5
+
+num_jobs_in_parallel : 20
