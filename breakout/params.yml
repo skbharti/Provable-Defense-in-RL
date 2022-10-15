@@ -1,0 +1,101 @@
+---
+### Some of these paramters is updated from the respective functions in driver_parallel.py file.
+#############################################################################################################
+### required basic parameters
+#############################################################################################################
+#
+#   folder : base folder location : contains pretrained model, clean data samples, and basis, copy the path
+#            of downloaded 'data' directory here. all further outputs will be stored here as well.
+#   test_subfolder : location wrt to base folder where data of current test instance will be stored - update 
+#   index : index of the trained model to be used
+#   num_trials : total number of trials to run for sanitization
+#   test_count : number of environments to test in each trial(each environment is run for one episode)
+#
+#############################################################################################################
+folder : 'pretrained_backdoor/'
+test_subfolder : 'test_outputs/non_sanitized/no_poison/'
+index : 80000128
+
+test_count : 5
+num_trials : 4
+
+#############################################################################################################
+### saving the results
+#############################################################################################################
+#   save_results : whether to save the csv result in log directory or not
+#   store_states : whether to store all the states and projections(if sanitizing) to an npy file
+#   store_name : name prefix of the files that will store all the states and actions as an npy
+#   gif_name : if provided, store a gif with this name,
+#   video_name : if provided, a video will be produced and stored with this name
+#   media : the folder to save gifs or videos
+#############################################################################################################
+save_results : true
+save_states : false
+store_name : 'trial'
+gif_name : 'trial_'
+video_name : 'trial_video_'
+media_folder : ''
+
+#############################################################################################################
+### modes to run : mutually exclusive {load_basis(T/F), load_all_states(T/F), load_from_clean_trials(T/F)}
+#############################################################################################################
+#   A.) sanitize : sanitizing the policy or not, if yes provide the decomposition type 'svd' vs 'qr'
+#      1.) load_basis : load basis from load_basis_subfolder
+#      2.) load_all_states : load a numpy array of states collected after processing the clean trials
+#      3.) load_from_cleam_trials : load states from different clean trial files
+#      
+#   in the last two cases, save the basis to save_basis_subfolder if save_basis is true
+#############################################################################################################
+
+sanitize : false
+
+# load basis for testing with a fixed basis - used for testing sanitized_policy for different number of safe d
+load_basis : false
+top_proj_basis_dim : 2000
+load_basis_subfolder : 'clean_data/basis/svd/clean_sample_32768/trial_0'
+
+# load all states for sanitizing with a fresh set of already collected and processed clean samples
+load_all_states : false
+all_states_file : 'clean_data/states/all_states_75_300_from_no_poison_200_trials.npy'
+total_sanitizing_samples : 21000
+
+# load all states for sanitizing with a fresh set of already collected clean episodes
+load_from_clean_trials : false
+clean_trials_subfolder : 'test_outputs/non_sanitized/no_poison/'
+num_clean_episodes : 20
+num_samples_each : 800
+
+save_basis : false   # save basis only when load_basis is false
+save_basis_subfolder : 'clean_data/basis/qr/all_states_75_300_from_no_poison_200_trials_40000_samples/' 
+
+singular_value_threshold : 0.0000000001
+############################################################################################################
+### poison parameters :
+############################################################################################################
+#   poison : to be poisoned or not
+#   poison types : mutually exclusive {poison_randomly(T/F), poison_some(T/F), window(int)} 
+#     1.) poison_some : poison a total of poison_some states
+#     2.) poison_randomly : not clear
+#     3.) window : poison from 0 time step to window time step
+#     - poison_some and poison_randomly is somewhat similar
+############################################################################################################
+poison : true
+
+poison_randomly : false
+poison_some : 2000
+window : false
+
+pixels_to_poison : 3
+color : 100
+
+
+
+#############################################################################################################
+### other parameters
+#############################################################################################################
+
+num_lives : 1   # play till at least some life is >= num_lives
+noops : 30      # maximum amount of no-ops to use
+device : '/cpu:0'
+num_jobs_in_parallel : 24   # number of parallel processes to run
+
