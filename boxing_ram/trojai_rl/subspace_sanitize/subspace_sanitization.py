@@ -78,7 +78,7 @@ def test_backdoor_policy_on_clean_or_triggered_env_in_parallel(args, trigger):
 
         # define and load the saved triggered model and policy
         policy_type = 'triggered-'+str(args.trigger_magnitude)    # name of the triggered policy to be used
-        args.model, args.policy = load_pretrained(args.testing_env, policy_type)   # state and action space info of testing_env is used
+        args.model, args.policy = load_pretrained(args.testing_env, args.model_file_path)  # state and action space info of testing_env is used
         args.preprocess = args.model.preprocess_obss if args.model.preprocess_obss \
                 else torch_ac.format.default_preprocess_obss
 
@@ -132,7 +132,7 @@ def sanitize_and_test_on_triggered_env_in_parallel(args):
 
         # define and load the saved triggered model and policy
         policy_type = 'triggered-'+str(args.trigger_magnitude)    # name of the triggered policy to be used
-        args.model, args.policy = load_pretrained(args.triggered_env, policy_type)
+        args.model, args.policy = load_pretrained(args.triggered_env, args.model_file_path)
         args.preprocess = args.model.preprocess_obss if args.model.preprocess_obss \
                 else torch_ac.format.default_preprocess_obss
 
@@ -194,7 +194,7 @@ def sanitize_and_test_on_triggered_env_for_fixed_n_in_parallel(args, num_samples
 
             # define and load the saved triggered model and policy
             policy_type = 'triggered-'+str(cargs.trigger_magnitude)    # name of the triggered policy to be used
-            cargs.model, cargs.policy = load_pretrained(cargs.triggered_env, policy_type)
+            cargs.model, cargs.policy = load_pretrained(cargs.triggered_env, args.model_file_path)
             cargs.preprocess = cargs.model.preprocess_obss if cargs.model.preprocess_obss \
                     else torch_ac.format.default_preprocess_obss
 
@@ -241,12 +241,18 @@ def start(args, commands):
 
         elif('sanitized_in_triggered' in commands):
             # test sanitized policy in the triggered env
-            args.clean_sample_run_dir_path = '../../outputs/TROJ-26/'
+
+            # output path from which clean samples will be used for sanitization.
+            args.clean_sample_dir = 'TROJ-26'
+            args.clean_sample_run_dir_path = os.path.join(args.output_base_dir, args.clean_sample_dir)
             sanitize_and_test_on_triggered_env_in_parallel(args)
 
         elif('sanitized_with_fixed_n' in commands):
             # test sanitized policy with fixed n and different safe subspace dimension
-            args.clean_sample_run_dir_path = '../../outputs/TROJ-26/'
+
+            # output path from which clean samples will be used for sanitization.
+            args.clean_sample_dir = 'TROJ-26'
+            args.clean_sample_run_dir_path = os.path.join(args.output_base_dir, args.clean_sample_dir)
             sanitize_and_test_on_triggered_env_for_fixed_n_in_parallel(args, num_samples=40)
         else:
             pass
@@ -270,6 +276,8 @@ if __name__ == '__main__':
     '''
         - append code path and import it
     '''
+    
+    args.project_dir_path = os.path.abspath(args.project_dir_path)
     sys.path.append(args.project_dir_path)
     
     commands = sys.argv[1:]
@@ -280,14 +288,24 @@ if __name__ == '__main__':
     if(total_accepted<=0):
         raise ValueError('Enter correct command argument from ', all_commands_list)
     
-   
+  
     from trojai_rl.subspace_sanitize.sampler import collect_experiences, load_pretrained, save_csv_data
     from trojai_rl.subspace_sanitize.helper import test_env
     from trojai_rl.subspace_sanitize.policy_generator import SanitizedPolicyGenerator,PolicyGenerator
     from trojai_rl.datagen.envs.wrapped_boxing_with_trigger import WrappedBoxingConfig, RAMEnvFactory
 
     args.output_base_dir = os.path.join(args.project_dir_path, args.output_dir)
+    policy_type = 'triggered-'+str(args.trigger_magnitude)    # name of the triggered policy to be used
 
+    if(policy_type=='triggered-255'):
+        # load triggered-255 model
+        args.model_file_path = os.path.join(args.project_dir_path, 'trojai_rl/models/pretrained_backdoor/', 'triggered_255', 'BoxingFC512Model.pt')
+    elif(policy_type=='triggered-10'):
+        # load triggered-10 model
+        args.model_file_path = os.path.join(args.project_dir_path, 'trojai_rl/models/pretrained_backdoor/', 'triggered_10', 'BoxingFC512Model.pt')
+    else:
+        raise ValueError('Model file name/type not provided properly!')
+    
     if(args.record):
         '''
             - if recording is on save data to 'TROJ-X' directory, else save data to 'no_record' directory

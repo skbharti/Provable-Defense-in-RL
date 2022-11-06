@@ -70,27 +70,11 @@ def collect_experiences(model, episode_budget, env, seed, preprocess, device, da
         - load the 'model_name' model using 'env' variables 
 
 '''
-def load_pretrained(env, model_file):
+def load_pretrained(env, model_file_path):
     
     # define and load the saved model
-    model = FC512Model(env.observation_space, env.action_space)
-    
-    # in older notation just trained_policy type is passed in as model_file in that case load the relevant file
-    # in new notation the complete model file path is passed, so in this case just load from the file
-    if(model_file=='triggered-255'):
-        # load triggered-255 model
-        model_path = '../../models/pretrained_backdoor/triggered-255/BoxingFC512Model.pt'
-    elif(model_file=='triggered-10'):
-        # load triggered-10 model
-        model_path = '../../models/pretrained_backdoor/triggered-10/BoxingFC512Model.pt'
-        model.load_state_dict(torch.load())
-    elif('TROJ' in model_file):
-        model_path = model_file
-    else:
-        raise ValueError('Model file name/type not provided properly!')
-    
-    print("\nLoading model from : ", os.path.abspath(model_path))
-    model.load_state_dict(torch.load(model_path))
+    model = FC512Model(env.observation_space, env.action_space)    
+    model.load_state_dict(torch.load(model_file_path))
 
     return model, PolicyGenerator(model).policy
 

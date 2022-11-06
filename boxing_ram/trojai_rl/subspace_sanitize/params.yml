@@ -17,7 +17,7 @@ verbose : 1
 
 
 record : true
-record_notes : 'test sanitized policy in triggered env for different d for fixed n=40'
+record_notes : ''
 output_dir : 'outputs' 
 
 #############################################################################################################
