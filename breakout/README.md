@@ -7,12 +7,10 @@ The state space consists of a concatenated image frames. The trigger is a 3x3 sq
 
 ## Setup codebase and python environment.
 
-1.  extract the 'code' and the 'data' directory locally.
-2.  copy the full path of the local 'data' directory in the 'folder' parameter in code/params.yml file 
-3. install anaconda, follow instructions [here](https://docs.anaconda.com/anaconda/install/).
-4. create a new environment from the specification file.
+1. install anaconda, follow instructions [here](https://docs.anaconda.com/anaconda/install/).
+2. create a new environment from the specification file.
  ```conda env create --name NEW_ENV_NAME -f environment.yml```
-5. activate conda environment.
+3. activate conda environment.
  ```conda activate NEW_ENV_NAME```
 
 ## Run the code. 
