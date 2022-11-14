@@ -8,13 +8,16 @@ We note that the full RAM state is a $256$-byte vector and in our setup we use o
 
 step 1 : install anaconda, follow instructions [here](https://docs.anaconda.com/anaconda/install/).
 
-step 2 : create a new environment from the specification file 
-```conda env create --name NEW_ENV_NAME -f environment.yml```
+step 2 : create a new conda environment 
+```conda create --name NEW_ENV_NAME```
 
 step 3 : activate the conda environment 
 ```conda activate NEW_ENV_NAME```
 
-step 4 : install atari_roms from the instruction given [here](https://github.com/openai/atari-py#roms).
+step 4 : install this code using pip and add directory path to python.
+```pip install . ; export PYTHONPATH="${PYTHONPATH}:${PWD}"```
+
+step 5 : install Atari ROMs from the instruction given [here](https://github.com/openai/atari-py#roms) in the ROMs section.
 
 
 ## Run the code.
